@@ -1,4 +1,4 @@
-import { login, logout, getInfo } from '@/api/user'
+import { login, getInfo } from '@/api/user'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 import { resetRouter } from '@/router'
 
@@ -32,63 +32,52 @@ const mutations = {
 }
 
 const actions = {
-  // user login
-  login({ commit }, userInfo) {
+  // 管理员登录
+  async login({ commit }, userInfo) {
     const { username, password } = userInfo
-    return new Promise((resolve, reject) => {
-      login({ username: username.trim(), password: password }).then(response => {
-        const { data } = response
-        commit('SET_TOKEN', data.token)
-        setToken(data.token)
-        resolve()
-      }).catch(error => {
-        reject(error)
-      })
+    return await login({ username: username.trim(), password: password }).then(response => {
+      const { data } = response
+      commit('SET_TOKEN', data.accessToken)
+      setToken(data.accessToken)
+      return Promise.resolve()
+    }).catch(error => {
+      return Promise.reject(error)
+    })
+  },
+  // 获取管理员信息
+  async getInfo({ commit, state }) {
+    return await getInfo(state.token).then(response => {
+      const { data } = response
+      if (!data) {
+        return Promise.reject('管理员授权过期，请重新登录')
+      }
+      data.roles = ['admin']
+      data.avatar = "https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=1194131577,2954769920&fm=26&gp=0.jpg"
+
+      const { roles, avatar, username } = data
+      if (!roles || roles.length <= 0) {
+        return Promise.reject('getInfo: roles must be a non-null array!')
+      }
+      commit('SET_ROLES', roles)
+      commit('SET_NAME', username)
+      commit('SET_AVATAR', avatar)
+      return Promise.resolve(data)
+    }).catch(error => {
+      return Promise.reject(error)
     })
   },
 
-  // get user info
-  getInfo({ commit, state }) {
-    return new Promise((resolve, reject) => {
-      getInfo(state.token).then(response => {
-        const { data } = response
-
-        if (!data) {
-          reject('Verification failed, please Login again.')
-        }
-
-        const { roles, name, avatar } = data
-
-        // roles must be a non-empty array
-        if (!roles || roles.length <= 0) {
-          reject('getInfo: roles must be a non-null array!')
-        }
-
-        commit('SET_ROLES', roles)
-        commit('SET_NAME', name)
-        commit('SET_AVATAR', avatar)
-        resolve(data)
-      }).catch(error => {
-        reject(error)
-      })
+  // 管理员退出
+  logout({ commit }) {
+    return new Promise((resolve) => {
+      removeToken() // must remove  token  first
+      resetRouter()
+      commit('RESET_STATE')
+      resolve()
     })
   },
 
-  // user logout
-  logout({ commit, state }) {
-    return new Promise((resolve, reject) => {
-      logout(state.token).then(() => {
-        removeToken() // must remove  token  first
-        resetRouter()
-        commit('RESET_STATE')
-        resolve()
-      }).catch(error => {
-        reject(error)
-      })
-    })
-  },
-
-  // remove token
+  // 删除accesstToken
   resetToken({ commit }) {
     return new Promise(resolve => {
       removeToken() // must remove  token  first

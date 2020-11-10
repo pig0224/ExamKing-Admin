@@ -31,12 +31,24 @@ module.exports = {
   productionSourceMap: false,
   devServer: {
     port: port,
-    open: true,
+    open: true, // 配置自动启动浏览器
+    hotOnly: true, // 热更新
     overlay: {
       warnings: false,
       errors: true
     },
-    before: require('./mock/mock-server.js')
+    // 代理解决跨域问题
+    proxy: {
+      "/dev-admin-api/v1": {
+        target: 'http://47.107.57.47:8072/api/v1',
+        ws: true,
+        changeOrigin: true,
+        pathRewrite: {
+          "^/dev-admin-api/v1": ""
+        }
+      }
+    }
+    // before: require('./mock/mock-server.js')
   },
   configureWebpack: {
     // provide the app's title in webpack's name field, so that

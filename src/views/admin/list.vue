@@ -1,30 +1,93 @@
-<!-- admin list -->
 <template>
-  <div class='admin-list'>
-    Admin List
+  <div class="app-container">
+
+    <el-table v-loading="listLoading"
+              :data="tableData"
+              border
+              fit
+              highlight-current-row
+              style="width: 100%">
+      <el-table-column name="examName"
+                       label="考试名称"
+                       width="200" />
+      <el-table-column name="stuNo"
+                       label="学号"
+                       width="120">
+        <!-- <template slot-scope="scope">{{ scope.row.date }}</template> -->
+      </el-table-column>
+      <el-table-column prop="stuName"
+                       label="姓名"
+                       width="120" />
+      <el-table-column prop="deptName"
+                       label="系别"
+                       width="120" />
+      <el-table-column prop="classesName"
+                       label="系别"
+                       width="120" />
+      <el-table-column prop="chengji"
+                       label="总成绩" />
+      <el-table-column prop="danxuan"
+                       label="单选题成绩" />
+      <el-table-column prop="duoxuan"
+                       label="多选题成绩" />
+      <el-table-column prop="shifei"
+                       label="是非题成绩" />
+
+      <el-table-column width="220px"
+                       label="操作"
+                       align="center">
+        <template slot-scope="{row}">
+          <!-- <router-link :to="{path:'/user/admin/edit', query:{id:row.id}}"
+                       class="link-left">
+            <el-button size="mini">编辑</el-button>
+          </router-link> -->
+          <el-button size="mini"
+                     type="danger"
+                     @click="deleteUser(row)"
+                     class="link-left">删除</el-button>
+        </template>
+      </el-table-column>
+    </el-table>
+
+    <pagination v-show="total>0"
+                :total="total"
+                :page.sync="queryParam.pageIndex"
+                :limit.sync="queryParam.pageSize"
+                @pagination="search" />
   </div>
 </template>
 
 <script>
+import Pagination from '@/components/Pagination'
+
 export default {
-  components: {},
+  components: { Pagination },
   data() {
-    return {}
+    return {
+      queryParam: {
+        userName: '',
+        role: 3,
+        pageIndex: 1,
+        pageSize: 10,
+      },
+      listLoading: false,
+      total: 10,
+      tableData: [{}],
+    }
   },
-  computed: {},
-  watch: {},
-  methods: {},
-  created() {},
-  mounted() {},
-  beforeCreate() {}, //生命周期 - 创建之前
-  beforeMount() {}, //生命周期 - 挂载之前
-  beforeUpdate() {}, //生命周期 - 更新之前
-  updated() {}, //生命周期 - 更新之后
-  beforeDestroy() {}, //生命周期 - 销毁之前
-  destroyed() {}, //生命周期 - 销毁完成
-  activated() {}, //如果页面有keep-alive缓存功能，这个函数会触发
+  methods: {
+    handleSizeChange(e) {
+      console.log(e)
+    },
+    toggleSelection(rows) {
+      if (rows) {
+        rows.forEach((row) => {
+          this.$refs.multipleTable.toggleRowSelection(row)
+        })
+      } else {
+        this.$refs.multipleTable.clearSelection()
+      }
+    },
+  },
 }
 </script>
-
-<style lang='scss' scoped>
-</style>
