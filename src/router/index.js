@@ -89,6 +89,12 @@ export const asyncRoutes = [
         component: () => import('@/views/admin/edit.vue'),
         hidden: true,
         meta: { title: '编辑管理员', icon: 'dashboard' }
+      }, {
+        path: 'change-pass',
+        name: 'AdminChangePass',
+        component: () => import('@/views/admin/changePass.vue'),
+        hidden: true,
+        meta: { title: '修改密码', icon: 'dashboard' }
       }
     ]
   },

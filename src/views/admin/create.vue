@@ -8,13 +8,13 @@
              v-loading="formLoading"
              :rules="rules">
       <el-form-item label="账号："
-                    prop="userName"
-                    required>
+                    prop="username">
         <el-input v-model="form.username"></el-input>
       </el-form-item>
       <el-form-item label="密码："
-                    required>
-        <el-input v-model="form.password"></el-input>
+                    prop="password">
+        <el-input v-model="form.password"
+                  type="password"></el-input>
       </el-form-item>
       <el-form-item>
         <el-button type="primary"
@@ -26,6 +26,9 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
+import adminApi from '@/api/admin'
+
 export default {
   components: {},
   data() {
@@ -46,7 +49,33 @@ export default {
   },
   computed: {},
   watch: {},
-  methods: {},
+  methods: {
+    async submitForm() {
+      let _this = this
+      this.$refs.form.validate((valid) => {
+        if (valid) {
+          this.formLoading = true
+          adminApi
+            .create(this.form)
+            .then(() => {
+              _this.$message.success('新增成功')
+              _this.delCurrentView(_this).then(() => {
+                _this.$router.push('/admin/list')
+              })
+            })
+            .catch(() => {
+              _this.formLoading = false
+            })
+        } else {
+          return false
+        }
+      })
+    },
+    resetForm() {
+      this.$refs['form'].resetFields()
+    },
+    ...mapActions('tagsView', { delCurrentView: 'delCurrentView' }),
+  },
   created() {},
   mounted() {},
   beforeCreate() {}, //生命周期 - 创建之前

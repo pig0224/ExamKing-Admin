@@ -9,7 +9,8 @@
              :rules="rules">
       <el-form-item label="账号："
                     prop="username">
-        <el-input v-model="form.username"></el-input>
+        <el-input v-model="form.username"
+                  disabled></el-input>
       </el-form-item>
       <el-form-item label="密码：">
         <el-input v-model="form.password"
@@ -34,7 +35,6 @@ export default {
   data() {
     return {
       form: {
-        id: null,
         username: '',
         password: '',
       },
@@ -56,7 +56,8 @@ export default {
       this.$refs.form.validate((valid) => {
         if (valid) {
           this.formLoading = true
-          var { id, username, password } = this.form
+          var { username, password } = this.form
+          var id = this.adminId
           adminApi
             .update({ id, username, password })
             .then(() => {
@@ -80,14 +81,11 @@ export default {
   },
   async created() {
     this.formLoading = true
-    var id = this.$route.query.id
     let that = this
-    if (id) {
-      await adminApi.find(id).then(({ data }) => {
-        that.form = data
-      })
-      this.formLoading = false
-    }
+    await adminApi.find(that.adminId).then(({ data }) => {
+      that.form = data
+    })
+    this.formLoading = false
   },
   mounted() {},
   beforeCreate() {}, //生命周期 - 创建之前

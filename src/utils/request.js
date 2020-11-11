@@ -48,14 +48,14 @@ service.interceptors.response.use(
     const res = response.data
 
     if (status == 200) {
-      if (res.data && res.data.successed == false) {
+      if (res.successed == false) {
         // 异常和验证处理
         Message({
-          message: ValidateMsg(res.data.errors) || 'Error',
+          message: ValidateMsg(res.errors) || 'Error',
           type: 'error',
           duration: 5 * 1000
         })
-        return Promise.reject(new Error(ValidateMsg(res.data.errors)))
+        return Promise.reject(new Error(ValidateMsg(res.errors)))
       }
       return res
     } else if (status == 401) {
@@ -82,7 +82,7 @@ service.interceptors.response.use(
   error => {
     console.log('err' + error) // for debug
     Message({
-      message: ValidateMsg(error.errors),
+      message: ValidateMsg('Error'),
       type: 'error',
       duration: 5 * 1000
     })

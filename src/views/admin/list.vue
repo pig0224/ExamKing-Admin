@@ -47,7 +47,7 @@
 
 <script>
 import Pagination from '@/components/Pagination'
-import { list, remove } from '@/api/admin'
+import adminApi from '@/api/admin'
 
 export default {
   components: { Pagination },
@@ -68,7 +68,7 @@ export default {
   methods: {
     async search() {
       this.listLoading = true
-      await list(this.queryParam).then(({ data }) => {
+      await adminApi.list(this.queryParam).then(({ data }) => {
         this.queryParam.pageIndex = data.pageIndex
         this.queryParam.pageSize = data.pageSize
         this.totalCount = data.totalCount
@@ -85,7 +85,7 @@ export default {
         type: 'warning',
       })
         .then(() => {
-          remove(id).then(() => {
+          adminApi.remove(id).then(() => {
             this.$message({
               type: 'success',
               message: '删除成功!',

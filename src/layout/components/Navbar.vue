@@ -21,6 +21,11 @@
               首页
             </el-dropdown-item>
           </router-link>
+          <router-link to="/admin/change-pass">
+            <el-dropdown-item>
+              修改密码
+            </el-dropdown-item>
+          </router-link>
           <el-dropdown-item divided
                             @click.native="logout">
             <span style="display:block;">退出登录</span>

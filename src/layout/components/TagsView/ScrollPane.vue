@@ -19,7 +19,6 @@ export default {
   },
   computed: {
     scrollWrapper() {
-      console.log(123)
       return this.$refs.scrollContainer.$refs.wrap
     },
   },
