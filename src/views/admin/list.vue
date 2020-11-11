@@ -1,56 +1,44 @@
 <template>
   <div class="app-container">
+    <el-form :model="queryParam"
+             ref="queryForm"
+             :inline="true">
+      <el-form-item>
+        <router-link :to="{path:'/admin/create'}"
+                     class="link-left">
+          <el-button type="primary">添加</el-button>
+        </router-link>
+      </el-form-item>
+    </el-form>
 
     <el-table v-loading="listLoading"
-              :data="tableData"
+              :data="items"
               border
               fit
               highlight-current-row
               style="width: 100%">
-      <el-table-column name="examName"
-                       label="考试名称"
-                       width="200" />
-      <el-table-column name="stuNo"
-                       label="学号"
-                       width="120">
-        <!-- <template slot-scope="scope">{{ scope.row.date }}</template> -->
-      </el-table-column>
-      <el-table-column prop="stuName"
-                       label="姓名"
-                       width="120" />
-      <el-table-column prop="deptName"
-                       label="系别"
-                       width="120" />
-      <el-table-column prop="classesName"
-                       label="系别"
-                       width="120" />
-      <el-table-column prop="chengji"
-                       label="总成绩" />
-      <el-table-column prop="danxuan"
-                       label="单选题成绩" />
-      <el-table-column prop="duoxuan"
-                       label="多选题成绩" />
-      <el-table-column prop="shifei"
-                       label="是非题成绩" />
-
+      <el-table-column prop="username"
+                       label="管理员账号" />
+      <el-table-column prop="createTime"
+                       label="创建时间" />
       <el-table-column width="220px"
                        label="操作"
                        align="center">
         <template slot-scope="{row}">
-          <!-- <router-link :to="{path:'/user/admin/edit', query:{id:row.id}}"
+          <router-link :to="{path:'/admin/edit', query:{id:row.id}}"
                        class="link-left">
             <el-button size="mini">编辑</el-button>
-          </router-link> -->
+          </router-link>
           <el-button size="mini"
                      type="danger"
-                     @click="deleteUser(row)"
+                     @click="deleteAdmin(row)"
                      class="link-left">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
 
-    <pagination v-show="total>0"
-                :total="total"
+    <pagination v-show="totalCount>0"
+                :total="totalCount"
                 :page.sync="queryParam.pageIndex"
                 :limit.sync="queryParam.pageSize"
                 @pagination="search" />
@@ -59,34 +47,54 @@
 
 <script>
 import Pagination from '@/components/Pagination'
+import { list, remove } from '@/api/admin'
 
 export default {
   components: { Pagination },
   data() {
     return {
+      listLoading: false,
       queryParam: {
-        userName: '',
-        role: 3,
         pageIndex: 1,
         pageSize: 10,
       },
-      listLoading: false,
-      total: 10,
-      tableData: [{}],
+      totalCount: 0,
+      items: [],
     }
   },
+  created() {
+    this.search()
+  },
   methods: {
-    handleSizeChange(e) {
-      console.log(e)
+    async search() {
+      this.listLoading = true
+      await list(this.queryParam).then(({ data }) => {
+        this.queryParam.pageIndex = data.pageIndex
+        this.queryParam.pageSize = data.pageSize
+        this.totalCount = data.totalCount
+        this.items = data.items
+      })
+      this.listLoading = false
     },
-    toggleSelection(rows) {
-      if (rows) {
-        rows.forEach((row) => {
-          this.$refs.multipleTable.toggleRowSelection(row)
+    async deleteAdmin(row) {
+      // console.log(row)
+      var id = row.id
+      this.$confirm('此操作将永久删除, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning',
+      })
+        .then(() => {
+          remove(id).then(() => {
+            this.$message({
+              type: 'success',
+              message: '删除成功!',
+            })
+            this.queryParam.pageIndex = 1
+            this.search()
+          })
         })
-      } else {
-        this.$refs.multipleTable.clearSelection()
-      }
+        .catch(() => {})
     },
   },
 }

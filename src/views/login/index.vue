@@ -116,7 +116,6 @@ export default {
             .dispatch('user/login', this.loginForm)
             .then(() => {
               this.$router.push({ path: this.redirect || '/' })
-              console.log(123)
               this.loading = false
             })
             .catch(() => {

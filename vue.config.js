@@ -40,7 +40,8 @@ module.exports = {
     // 代理解决跨域问题
     proxy: {
       "/dev-admin-api/v1": {
-        target: 'http://47.107.57.47:8072/api/v1',
+        // target: 'http://47.107.57.47:8072/api/v1',
+        target: 'https://localhost:5002/api/v1',
         ws: true,
         changeOrigin: true,
         pathRewrite: {

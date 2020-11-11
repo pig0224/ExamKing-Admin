@@ -1,7 +1,27 @@
 <!-- admin create -->
 <template>
-  <div class='admin-create'>
-    admin create
+  <div class="app-container">
+
+    <el-form :model="form"
+             ref="form"
+             label-width="100px"
+             v-loading="formLoading"
+             :rules="rules">
+      <el-form-item label="账号："
+                    prop="userName"
+                    required>
+        <el-input v-model="form.username"></el-input>
+      </el-form-item>
+      <el-form-item label="密码："
+                    required>
+        <el-input v-model="form.password"></el-input>
+      </el-form-item>
+      <el-form-item>
+        <el-button type="primary"
+                   @click="submitForm">提交</el-button>
+        <el-button @click="resetForm">重置</el-button>
+      </el-form-item>
+    </el-form>
   </div>
 </template>
 
@@ -9,7 +29,20 @@
 export default {
   components: {},
   data() {
-    return {}
+    return {
+      form: {
+        id: null,
+        username: '',
+        password: '',
+      },
+      formLoading: false,
+      rules: {
+        username: [
+          { required: true, message: '请输入用户名', trigger: 'blur' },
+        ],
+        password: [{ required: true, message: '请输入密码', trigger: 'blur' }],
+      },
+    }
   },
   computed: {},
   watch: {},

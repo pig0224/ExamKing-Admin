@@ -48,7 +48,7 @@ service.interceptors.response.use(
     const res = response.data
 
     if (status == 200) {
-      if (res.data.successed == false) {
+      if (res.data && res.data.successed == false) {
         // 异常和验证处理
         Message({
           message: ValidateMsg(res.data.errors) || 'Error',

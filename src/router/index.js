@@ -49,7 +49,7 @@ export const constantRoutes = [
       path: 'dashboard',
       name: 'Dashboard',
       component: () => import('@/views/dashboard/index'),
-      meta: { title: '首页', icon: 'dashboard' }
+      meta: { title: '首页', icon: 'dashboard', affix: true }
     }]
   }
 ]
@@ -82,6 +82,13 @@ export const asyncRoutes = [
         name: 'AdminCreate',
         component: () => import('@/views/admin/create.vue'),
         meta: { title: '管理员创建', icon: 'dashboard' }
+      },
+      {
+        path: 'edit',
+        name: 'AdminEdit',
+        component: () => import('@/views/admin/edit.vue'),
+        hidden: true,
+        meta: { title: '编辑管理员', icon: 'dashboard' }
       }
     ]
   },
