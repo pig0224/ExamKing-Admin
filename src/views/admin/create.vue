@@ -16,8 +16,10 @@
         <el-input v-model="form.password"
                   type="password"></el-input>
       </el-form-item>
+
       <el-form-item>
-        <el-button type="primary"
+        <el-button type="
+                   primary"
                    @click="submitForm">提交</el-button>
         <el-button @click="resetForm">重置</el-button>
       </el-form-item>
@@ -34,7 +36,6 @@ export default {
   data() {
     return {
       form: {
-        id: null,
         username: '',
         password: '',
       },
