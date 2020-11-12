@@ -10,16 +10,15 @@
       <el-form-item label="所属系别："
                     prop="deptId">
         <dept-class-select :dept-id.sync="form.deptId"
+                           :deptLabel="deptName"
                            :hiddenClasses="true"></dept-class-select>
       </el-form-item>
       <el-form-item label="班级名称："
                     prop="classesName">
         <el-input v-model="form.classesName"></el-input>
       </el-form-item>
-
       <el-form-item>
-        <el-button type="
-                   primary"
+        <el-button type="primary"
                    @click="submitForm">提交</el-button>
         <el-button @click="resetForm">重置</el-button>
       </el-form-item>
@@ -31,14 +30,17 @@
 import { mapActions } from 'vuex'
 import classesApi from '@/api/classes'
 import DeptClassSelect from '@/components/DeptClassSelect'
+
 export default {
   components: { DeptClassSelect },
   data() {
     return {
       form: {
+        id: null,
         deptId: 0,
         classesName: '',
       },
+      deptName: '',
       formLoading: false,
       rules: {
         deptId: [
@@ -50,7 +52,6 @@ export default {
       },
     }
   },
-  computed: {},
   watch: {},
   methods: {
     async submitForm() {
@@ -58,10 +59,11 @@ export default {
       this.$refs.form.validate((valid) => {
         if (valid) {
           this.formLoading = true
+          const { id, deptId, classesName } = _this.form
           classesApi
-            .create(this.form)
+            .update({ id, deptId, classesName })
             .then(() => {
-              _this.$message.success('新增成功')
+              _this.$message.success('修改成功')
               _this.delCurrentView(_this).then(() => {
                 _this.$router.push('/classes/list')
               })
@@ -79,7 +81,19 @@ export default {
     },
     ...mapActions('tagsView', { delCurrentView: 'delCurrentView' }),
   },
-  created() {},
+  async created() {
+    this.formLoading = true
+    var id = this.$route.query.id
+    let that = this
+    if (id) {
+      await classesApi.find(id).then(({ data }) => {
+        that.form = data
+        that.deptName = data.dept.deptName
+      })
+      console.log(this.form)
+      this.formLoading = false
+    }
+  },
   mounted() {},
   beforeCreate() {}, //生命周期 - 创建之前
   beforeMount() {}, //生命周期 - 挂载之前

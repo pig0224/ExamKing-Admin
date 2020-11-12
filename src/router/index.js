@@ -120,6 +120,12 @@ export const asyncRoutes = [
         name: 'DeptCreate',
         component: () => import('@/views/dept/create.vue'),
         meta: { title: '系别创建', icon: 'dashboard' }
+      }, {
+        path: 'edit',
+        name: 'DeptEdit',
+        component: () => import('@/views/dept/edit.vue'),
+        hidden: true,
+        meta: { title: '编辑系别', icon: 'dashboard' }
       }
     ]
   },
@@ -145,6 +151,12 @@ export const asyncRoutes = [
         name: 'ClassesCreate',
         component: () => import('@/views/classes/create.vue'),
         meta: { title: '班级创建', icon: 'dashboard' }
+      }, {
+        path: 'edit',
+        name: 'ClassesEdit',
+        component: () => import('@/views/classes/edit.vue'),
+        hidden: true,
+        meta: { title: '编辑班级', icon: 'dashboard' }
       }
     ]
   },
@@ -170,6 +182,12 @@ export const asyncRoutes = [
         name: 'TeacherCreate',
         component: () => import('@/views/teacher/create.vue'),
         meta: { title: '教师创建', icon: 'dashboard' }
+      }, {
+        path: 'edit',
+        name: 'TeacherEdit',
+        component: () => import('@/views/teacher/edit.vue'),
+        hidden: true,
+        meta: { title: '编辑教师', icon: 'dashboard' }
       }
     ]
   },
@@ -195,6 +213,12 @@ export const asyncRoutes = [
         name: 'CourseCreate',
         component: () => import('@/views/course/create.vue'),
         meta: { title: '课程创建', icon: 'dashboard' }
+      }, {
+        path: 'edit',
+        name: 'CourseEdit',
+        component: () => import('@/views/course/edit.vue'),
+        hidden: true,
+        meta: { title: '编辑课程', icon: 'dashboard' }
       }
     ]
   },
@@ -220,6 +244,12 @@ export const asyncRoutes = [
         name: 'StudentCreate',
         component: () => import('@/views/student/create.vue'),
         meta: { title: '学生创建', icon: 'dashboard' }
+      }, {
+        path: 'edit',
+        name: 'StudentEdit',
+        component: () => import('@/views/student/edit.vue'),
+        hidden: true,
+        meta: { title: '编辑学生', icon: 'dashboard' }
       }
     ]
   },

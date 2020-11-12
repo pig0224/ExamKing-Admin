@@ -10,7 +10,8 @@
                  :value="item.id"
                  :label="item.deptName"></el-option>
     </el-select>
-    <div class="center-line">-</div>
+    <div class="center-line"
+         v-show="hiddenClasses==false">-</div>
     <el-select filterable
                :loading="loading"
                v-show="hiddenClasses==false"
@@ -18,9 +19,9 @@
                placeholder="请选择班级"
                clearable>
       <el-option v-for="item in classesList"
-                 :key="item.id"
-                 :value="item.id"
-                 :label="item.classesName"></el-option>
+                 :key="item.key"
+                 :value="item.key"
+                 :label="item.value"></el-option>
     </el-select>
   </div>
 </template>
@@ -37,9 +38,19 @@ export default {
     },
     deptId: {
       type: Number,
+      default: 0,
     },
     classesId: {
       type: Number,
+      default: 0,
+    },
+    deptLabel: {
+      type: String,
+      default: '',
+    },
+    classesLabel: {
+      type: String,
+      default: '',
     },
   },
   computed: {
@@ -48,10 +59,17 @@ export default {
         return this.deptLabel
       },
       set(val) {
-        var item = this.format(this.deptClasses, val)
-        this.classesList = item.classes
+        var that = this
+        var item = this.getClasses(this.deptClasses, val)
+        for (let citem of item.classes) {
+          var classesItem = {
+            key: citem.id,
+            value: citem.classesName,
+          }
+          that.classesList.push(classesItem)
+        }
         this.deptLabel = item.deptName
-        this.$emit('update:deptId', Number(item.id))
+        this.$emit('update:deptId', item.id)
       },
     },
     Classes: {
@@ -59,9 +77,9 @@ export default {
         return this.classesLabel
       },
       set(val) {
-        var item = this.format(this.classesList, val)
+        var item = this.getClasses(this.classesList, val)
         this.classesLabel = item.classesName
-        this.$emit('update:classesId', Number(item.id))
+        this.$emit('update:classesId', item.id)
       },
     },
   },
@@ -69,15 +87,13 @@ export default {
   data() {
     return {
       loading: true,
-      deptLabel: '',
-      classesLabel: '',
       deptClasses: [],
       classesList: [],
     }
   },
   watch: {},
   methods: {
-    format: function (array, id) {
+    getClasses: function (array, id) {
       for (let item of array) {
         if (item.id === id) {
           return item

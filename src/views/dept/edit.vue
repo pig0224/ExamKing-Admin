@@ -1,4 +1,4 @@
-<!-- classes create -->
+<!-- dept create -->
 <template>
   <div class="app-container">
 
@@ -7,19 +7,12 @@
              label-width="100px"
              v-loading="formLoading"
              :rules="rules">
-      <el-form-item label="所属系别："
-                    prop="deptId">
-        <dept-class-select :dept-id.sync="form.deptId"
-                           :hiddenClasses="true"></dept-class-select>
+      <el-form-item label="系别名称："
+                    prop="deptName">
+        <el-input v-model="form.deptName"></el-input>
       </el-form-item>
-      <el-form-item label="班级名称："
-                    prop="classesName">
-        <el-input v-model="form.classesName"></el-input>
-      </el-form-item>
-
       <el-form-item>
-        <el-button type="
-                   primary"
+        <el-button type="primary"
                    @click="submitForm">提交</el-button>
         <el-button @click="resetForm">重置</el-button>
       </el-form-item>
@@ -29,28 +22,24 @@
 
 <script>
 import { mapActions } from 'vuex'
-import classesApi from '@/api/classes'
-import DeptClassSelect from '@/components/DeptClassSelect'
+import deptApi from '@/api/dept'
+
 export default {
-  components: { DeptClassSelect },
+  components: {},
   data() {
     return {
       form: {
-        deptId: 0,
-        classesName: '',
+        id: null,
+        deptName: '',
       },
       formLoading: false,
       rules: {
-        deptId: [
-          { required: true, message: '请输入系别名称', trigger: 'blur' },
-        ],
-        classesName: [
+        deptName: [
           { required: true, message: '请输入系别名称', trigger: 'blur' },
         ],
       },
     }
   },
-  computed: {},
   watch: {},
   methods: {
     async submitForm() {
@@ -58,12 +47,13 @@ export default {
       this.$refs.form.validate((valid) => {
         if (valid) {
           this.formLoading = true
-          classesApi
-            .create(this.form)
+          var { id, deptName } = this.form
+          deptApi
+            .update({ id, deptName })
             .then(() => {
-              _this.$message.success('新增成功')
+              _this.$message.success('修改成功')
               _this.delCurrentView(_this).then(() => {
-                _this.$router.push('/classes/list')
+                _this.$router.push('/dept/list')
               })
             })
             .catch(() => {
@@ -79,7 +69,17 @@ export default {
     },
     ...mapActions('tagsView', { delCurrentView: 'delCurrentView' }),
   },
-  created() {},
+  async created() {
+    this.formLoading = true
+    var id = this.$route.query.id
+    let that = this
+    if (id) {
+      await deptApi.find(id).then(({ data }) => {
+        that.form = data
+      })
+      this.formLoading = false
+    }
+  },
   mounted() {},
   beforeCreate() {}, //生命周期 - 创建之前
   beforeMount() {}, //生命周期 - 挂载之前

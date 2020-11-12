@@ -26,7 +26,7 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex'
+import { mapActions } from 'vuex'
 import adminApi from '@/api/admin'
 
 export default {
@@ -45,9 +45,6 @@ export default {
         ],
       },
     }
-  },
-  computed: {
-    ...mapGetters(['adminId']),
   },
   watch: {},
   methods: {
