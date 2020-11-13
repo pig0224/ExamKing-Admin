@@ -59,15 +59,8 @@ export default {
         return this.deptLabel
       },
       set(val) {
-        var that = this
         var item = this.getClasses(this.deptClasses, val)
-        for (let citem of item.classes) {
-          var classesItem = {
-            key: citem.id,
-            value: citem.classesName,
-          }
-          that.classesList.push(classesItem)
-        }
+        this.classesList = item.classes
         this.deptLabel = item.deptName
         this.$emit('update:deptId', item.id)
       },
