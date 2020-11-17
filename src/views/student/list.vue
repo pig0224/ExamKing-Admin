@@ -1,30 +1,113 @@
-<!-- student list -->
 <template>
-  <div class='student-list'>
-    student list
+  <div class="app-container">
+    <el-form :model="queryParam"
+             ref="queryForm"
+             :inline="true">
+      <el-form-item>
+        <router-link :to="{path:'/student/create'}"
+                     class="link-left">
+          <el-button type="primary">添加</el-button>
+        </router-link>
+      </el-form-item>
+    </el-form>
+
+    <el-table v-loading="listLoading"
+              :data="items"
+              border
+              fit
+              highlight-current-row
+              style="width: 100%">
+      <el-table-column prop="stuName"
+                       label="学生姓名" />
+      <!-- <el-table-column prop="dept.deptName"
+                       label="所属系别" />
+      <el-table-column prop="class.classesName"
+                       label="所属班级" /> -->
+      <el-table-column prop="sex"
+                       label="性别" />
+      <el-table-column prop="stuNo"
+                       label="学号" />
+      <el-table-column prop="telphone"
+                       label="联系电话" />
+      <el-table-column prop="idCard"
+                       label="身份证号码" />
+      <el-table-column prop="createTime"
+                       label="创建时间" />
+      <el-table-column width="220px"
+                       label="操作"
+                       align="center">
+        <template slot-scope="{row}">
+          <router-link :to="{path:'/student/edit', query:{id:row.id}}"
+                       class="link-left">
+            <el-button size="mini">编辑</el-button>
+          </router-link>
+          <el-button size="mini"
+                     type="danger"
+                     @click="deletestudent(row)"
+                     class="link-left">删除</el-button>
+        </template>
+      </el-table-column>
+    </el-table>
+
+    <pagination v-show="totalCount>0"
+                :total="totalCount"
+                :page.sync="queryParam.pageIndex"
+                :limit.sync="queryParam.pageSize"
+                @pagination="search" />
   </div>
 </template>
 
 <script>
+import Pagination from '@/components/Pagination'
+import studentApi from '@/api/student'
+
 export default {
-  components: {},
+  components: { Pagination },
   data() {
-    return {}
+    return {
+      listLoading: false,
+      queryParam: {
+        pageIndex: 1,
+        pageSize: 10,
+      },
+      totalCount: 0,
+      items: [],
+    }
   },
-  computed: {},
-  watch: {},
-  methods: {},
-  created() {},
-  mounted() {},
-  beforeCreate() {}, //生命周期 - 创建之前
-  beforeMount() {}, //生命周期 - 挂载之前
-  beforeUpdate() {}, //生命周期 - 更新之前
-  updated() {}, //生命周期 - 更新之后
-  beforeDestroy() {}, //生命周期 - 销毁之前
-  destroyed() {}, //生命周期 - 销毁完成
-  activated() {}, //如果页面有keep-alive缓存功能，这个函数会触发
+  created() {
+    this.search()
+  },
+  methods: {
+    async search() {
+      this.listLoading = true
+      await studentApi.list(this.queryParam).then(({ data }) => {
+        this.queryParam.pageIndex = data.pageIndex
+        this.queryParam.pageSize = data.pageSize
+        this.totalCount = data.totalCount
+        this.items = data.items
+      })
+      this.listLoading = false
+    },
+    async deletestudent(row) {
+      // console.log(row)
+      var id = row.id
+      this.$confirm('此操作将永久删除, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning',
+      })
+        .then(() => {
+          studentApi.remove(id).then(() => {
+            this.$message({
+              type: 'success',
+              message: '删除成功!',
+            })
+            this.queryParam.pageIndex = 1
+            this.search()
+          })
+        })
+        .catch(() => {})
+    },
+  },
 }
 </script>
-
-<style lang='scss' scoped>
-</style>

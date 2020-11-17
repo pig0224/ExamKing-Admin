@@ -1,18 +1,126 @@
-<!--  -->
+<!-- classes create -->
 <template>
-  <div class=''></div>
+  <div class="app-container">
+
+    <el-form :model="form"
+             ref="form"
+             label-width="100px"
+             v-loading="formLoading"
+             :rules="rules">
+      <el-form-item label="所属系别："
+                    prop="deptId">
+        <dept-class-select :dept-id.sync="form.deptId"
+                           :hiddenClasses="true"></dept-class-select>
+      </el-form-item>
+      <el-form-item label="学生ID："
+                    prop="id">
+        <el-input v-model="form.id"></el-input>
+      </el-form-item>
+
+      <el-form-item label="学生姓名："
+                    prop="stuName">
+        <el-input v-model="form.stuName"></el-input>
+      </el-form-item>
+
+      <el-form-item label="性别: "
+                    prop="sex">
+        <el-input v-model="form.sex"></el-input>
+      </el-form-item>
+
+      <el-form-item label="联系电话："
+                    prop="telphone">
+        <el-input v-model="form.telphone"></el-input>
+      </el-form-item>
+
+      <el-form-item label="密码："
+                    prop="password">
+        <el-input v-model="form.password"></el-input>
+      </el-form-item>
+
+      <el-form-item label="身份证号码："
+                    prop="idCard">
+        <el-input v-model="form.idCard"></el-input>
+      </el-form-item>
+
+      <el-form-item>
+        <el-button type="primary"
+                   @click="submitForm">提交</el-button>
+        <el-button @click="resetForm">重置</el-button>
+      </el-form-item>
+    </el-form>
+  </div>
 </template>
 
 <script>
+import { mapActions } from 'vuex'
+import studentApi from '@/api/student'
+import DeptClassSelect from '@/components/DeptClassSelect'
+
 export default {
-  components: {},
+  components: { DeptClassSelect },
   data() {
-    return {}
+    return {
+      form: {
+        id: 0,
+        stuName: '',
+        sex: '',
+        telphone: '',
+        password: '',
+        idCard: '',
+      },
+      deptName: '',
+      formLoading: false,
+      rules: {
+        deptId: [
+          { required: true, message: '请输入系别名称', trigger: 'blur' },
+        ],
+        stuName: [
+          { required: true, message: '请输入学生姓名', trigger: 'blur' },
+        ],
+      },
+    }
   },
-  computed: {},
   watch: {},
-  methods: {},
-  created() {},
+  methods: {
+    async submitForm() {
+      let _this = this
+      this.$refs.form.validate((valid) => {
+        if (valid) {
+          this.formLoading = true
+          studentApi
+            .update(_this.form)
+            .then(() => {
+              _this.$message.success('修改成功')
+              _this.delCurrentView(_this).then(() => {
+                _this.$router.push('/student/list')
+              })
+            })
+            .catch(() => {
+              _this.formLoading = false
+            })
+        } else {
+          return false
+        }
+      })
+    },
+    resetForm() {
+      this.$refs['form'].resetFields()
+    },
+    ...mapActions('tagsView', { delCurrentView: 'delCurrentView' }),
+  },
+  async created() {
+    this.formLoading = true
+    var id = this.$route.query.id
+    let that = this
+    if (id) {
+      await studentApi.find(id).then(({ data }) => {
+        that.form = data
+        // that.deptName = data.dept.deptName
+      })
+      console.log(this.form)
+      this.formLoading = false
+    }
+  },
   mounted() {},
   beforeCreate() {}, //生命周期 - 创建之前
   beforeMount() {}, //生命周期 - 挂载之前
