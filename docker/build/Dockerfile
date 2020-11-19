@@ -4,7 +4,7 @@ FROM node:latest
 LABEL author="pig224" email="xiaomo_0258@icloud.com"
 
 # 切换项目目录
-WORKDIR /home/examking
+WORKDIR /home/examking_admin
 # 复制项目文件夹
 COPY ./ ./
 
