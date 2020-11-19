@@ -1,14 +1,14 @@
 <template>
-  <div class='dept-class-select'>
-    <el-select v-model="Dept"
+  <div class='teacher-select'>
+    <el-select v-model="Teacher"
                :loading="loading"
-               placeholder="请选择系别"
+               placeholder="请选择教师"
                filterable
                clearable>
-      <el-option v-for="item in deptClasses"
+      <el-option v-for="item in items"
                  :key="item.id"
                  :value="item.id"
-                 :label="item.deptName"></el-option>
+                 :label="item.teacherName"></el-option>
       <div style="bottom: 0;width: 100%;background: #fff">
         <pagination v-show="totalCount>0"
                     :total="totalCount"
@@ -18,71 +18,35 @@
                     @pagination="search" />
       </div>
     </el-select>
-    <div class="center-line"
-         v-show="hiddenClasses==false">-</div>
-    <el-select filterable
-               :loading="loading"
-               v-show="hiddenClasses==false"
-               v-model="Classes"
-               placeholder="请选择班级"
-               clearable>
-      <el-option v-for="item in classesList"
-                 :key="item.id"
-                 :value="item.id"
-                 :label="item.classesName"></el-option>
-    </el-select>
   </div>
 </template>
 
 <script>
-import deptApi from '@/api/dept'
+import teacherApi from '@/api/teacher'
 import Pagination from '@/components/Pagination'
 
 export default {
-  name: 'DeptClassSelect',
+  name: 'TeacherSelect',
   components: { Pagination },
   props: {
-    hiddenClasses: {
-      type: Boolean,
-      default: false,
-    },
-    deptId: {
+    teacherId: {
       type: Number,
       default: 0,
     },
-    classesId: {
-      type: Number,
-      default: 0,
-    },
-    deptLabel: {
-      type: String,
-      default: '',
-    },
-    classesLabel: {
+    teacherLabel: {
       type: String,
       default: '',
     },
   },
   computed: {
-    Dept: {
+    Teacher: {
       get() {
-        return this.deptLabel
+        return this.teacherLabel
       },
       set(val) {
-        var item = this.getClasses(this.deptClasses, val)
-        this.classesList = item.classes
-        this.deptLabel = item.deptName
-        this.$emit('update:deptId', item.id)
-      },
-    },
-    Classes: {
-      get() {
-        return this.classesLabel
-      },
-      set(val) {
-        var item = this.getClasses(this.classesList, val)
-        this.classesLabel = item.classesName
-        this.$emit('update:classesId', item.id)
+        var item = this.getItem(this.items, val)
+        this.teacherLabel = item.teacherName
+        this.$emit('update:teacherId', item.id)
       },
     },
   },
@@ -94,8 +58,7 @@ export default {
       },
       totalCount: 0,
       loading: true,
-      deptClasses: [],
-      classesList: [],
+      items: [],
     }
   },
   watch: {},
@@ -103,15 +66,15 @@ export default {
     async search() {
       this.loading = true
       // 获取系别班级数据
-      await deptApi.list(this.queryParam).then(({ data }) => {
+      await teacherApi.list(this.queryParam).then(({ data }) => {
         this.queryParam.pageIndex = data.pageIndex
         this.queryParam.pageSize = data.pageSize
         this.totalCount = data.totalCount
-        this.deptClasses = data.items
+        this.items = data.items
       })
       this.loading = false
     },
-    getClasses: function (array, id) {
+    getItem(array, id) {
       for (let item of array) {
         if (item.id === id) {
           return item
