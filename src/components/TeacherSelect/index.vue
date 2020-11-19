@@ -44,9 +44,14 @@ export default {
         return this.teacherLabel
       },
       set(val) {
-        var item = this.getItem(this.items, val)
-        this.teacherLabel = item.teacherName
-        this.$emit('update:teacherId', item.id)
+        if (val) {
+          var item = this.getItem(this.items, val)
+          this.teacherLabel = item.teacherName
+          this.$emit('update:teacherId', item.id)
+        } else {
+          this.teacherLabel = ''
+          this.$emit('update:teacherId', 0)
+        }
       },
     },
   },

@@ -1,8 +1,6 @@
 <template>
   <div class="dashboard-container">
-    <div class="dashboard-text">name: {{ name }}</div>
-    <div class="dashboard-text">roles: <span v-for="role in roles"
-            :key="role">{{ role }}</span></div>
+    <div class="dashboard-text">欢迎使用考试君管理员系统</div>
   </div>
 </template>
 
@@ -24,6 +22,7 @@ export default {
   }
   &-text {
     font-size: 30px;
+    text-align: center;
     line-height: 46px;
   }
 }

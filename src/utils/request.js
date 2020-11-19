@@ -72,11 +72,11 @@ service.interceptors.response.use(
     } else {
       // 异常和验证处理
       Message({
-        message: 'Error',
+        message: ValidateMsg(res.errors),
         type: 'error',
         duration: 5 * 1000
       })
-      return Promise.reject(new Error('Error'))
+      return Promise.reject(new Error(res.errors))
     }
   },
   error => {

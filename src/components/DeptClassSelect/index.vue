@@ -69,10 +69,18 @@ export default {
         return this.deptLabel
       },
       set(val) {
-        var item = this.getClasses(this.deptClasses, val)
-        this.classesList = item.classes
-        this.deptLabel = item.deptName
-        this.$emit('update:deptId', item.id)
+        if (val) {
+          var item = this.getClasses(this.deptClasses, val)
+          this.classesList = item.classes
+          this.deptLabel = item.deptName
+          this.$emit('update:deptId', item.id)
+        } else {
+          this.classesList = []
+          this.deptLabel = ''
+          this.$emit('update:deptId', 0)
+          this.classesLabel = ''
+          this.$emit('update:classesId', 0)
+        }
       },
     },
     Classes: {
@@ -80,9 +88,14 @@ export default {
         return this.classesLabel
       },
       set(val) {
-        var item = this.getClasses(this.classesList, val)
-        this.classesLabel = item.classesName
-        this.$emit('update:classesId', item.id)
+        if (val) {
+          var item = this.getClasses(this.classesList, val)
+          this.classesLabel = item.classesName
+          this.$emit('update:classesId', item.id)
+        } else {
+          this.classesLabel = ''
+          this.$emit('update:classesId', 0)
+        }
       },
     },
   },
