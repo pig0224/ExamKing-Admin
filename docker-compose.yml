@@ -1,7 +1,7 @@
 version: '3.4'
 
 services:
-  nginx:
+  admin_nginx:
     build:
       context: ./
       dockerfile: ./docker/nginx/Dockerfile
@@ -13,7 +13,7 @@ services:
     restart: "always"
     volumes:
       - dist:/var/www/html:rw
-  build: 
+  admin_build: 
     build:
       context: ./
       dockerfile: ./docker/build/Dockerfile
