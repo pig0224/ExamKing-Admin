@@ -6,7 +6,7 @@ yarn-debug.log*
 yarn-error.log*
 package-lock.json
 tests/**/coverage/
-docker/nginx/logs/
+docker/nginx/logs/*.log
 
 # Editor directories and files
 .idea
