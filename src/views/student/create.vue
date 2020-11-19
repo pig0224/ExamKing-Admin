@@ -15,12 +15,7 @@
       <el-form-item label="所属系别："
                     prop="deptId">
         <dept-class-select :dept-id.sync="form.deptId"
-                           :classes-id.sync="form.classes"></dept-class-select>
-      </el-form-item>
-
-      <el-form-item label="班级名称"
-                    prop="classesId">
-        <el-input v-model="form.classesId"></el-input>
+                           :classes-id.sync="form.classesId"></dept-class-select>
       </el-form-item>
 
       <el-form-item label="性别："
@@ -83,7 +78,7 @@ export default {
           { required: true, message: '请输入学生姓名', trigger: 'blur' },
         ],
         deptId: [
-          { required: true, message: '请输入系别名称', trigger: 'blur' },
+          { required: true, message: '请输入选择系别', trigger: 'blur' },
         ],
       },
     }
