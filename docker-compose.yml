@@ -21,7 +21,6 @@ services:
       context: ./
       dockerfile: ./docker/build/Dockerfile
     container_name: examking_admin_build
-    restart: "always"
     volumes:
       - ./:/home/examking:rw
       - dist:/home/examking/dist
