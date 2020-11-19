@@ -28,11 +28,6 @@
         <el-input v-model="form.telphone"></el-input>
       </el-form-item>
 
-      <el-form-item label="教师工号："
-                    prop="teacherNo">
-        <el-input v-model="form.teacherNo"></el-input>
-      </el-form-item>
-
       <el-form-item label="密码："
                     prop="password">
         <el-input v-model="form.password"
@@ -69,7 +64,6 @@ export default {
         teacherName: '',
         sex: '',
         telphone: '',
-        teacherNo: '',
         password: '',
         deptId: 0,
         idCard: '',

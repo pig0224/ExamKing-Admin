@@ -25,8 +25,6 @@
                        label="联系电话" />
       <el-table-column prop="teacherNo"
                        label="教师工号" />
-      <el-table-column prop="teacherNo"
-                       label="教师工号" />
       <el-table-column prop="idCard"
                        label="身份证号码" />
 
