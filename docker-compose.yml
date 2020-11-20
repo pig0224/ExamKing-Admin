@@ -27,5 +27,5 @@ volumes:
   admin_dist:
 
 networks: # 创建新的网络类型
-  examking_net:
+  examking_admin_net:
     driver: bridge  # 网络方式：桥接或集群
