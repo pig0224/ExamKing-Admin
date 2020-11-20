@@ -1,6 +1,6 @@
 <template>
   <div class="dashboard-container">
-    <div class="dashboard-text">欢迎使用考试君管理员系统</div>
+    <div class="dashboard-text">Hello 欢迎使用考试君管理员系统</div>
   </div>
 </template>
 
