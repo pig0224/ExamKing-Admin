@@ -38,18 +38,26 @@ export default {
       default: '',
     },
   },
+  watch: {
+    teacherLabel: {
+      handler(val) {
+        this.teacherName = val
+      },
+      deep: true,
+    },
+  },
   computed: {
     Teacher: {
       get() {
-        return this.teacherLabel
+        return this.teacherName
       },
       set(val) {
         if (val) {
           var item = this.getItem(this.items, val)
-          this.teacherLabel = item.teacherName
+          this.teacherName = item.teacherName
           this.$emit('update:teacherId', item.id)
         } else {
-          this.teacherLabel = ''
+          this.teacherName = ''
           this.$emit('update:teacherId', 0)
         }
       },
@@ -61,12 +69,12 @@ export default {
         pageIndex: 1,
         pageSize: 10,
       },
+      teacherName: '',
       totalCount: 0,
       loading: true,
       items: [],
     }
   },
-  watch: {},
   methods: {
     async search() {
       this.loading = true
