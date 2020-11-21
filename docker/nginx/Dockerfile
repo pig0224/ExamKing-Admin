@@ -6,7 +6,7 @@ COPY ./ ./
 # 编译项目
 RUN npm install -g cnpm --registry=https://registry.npm.taobao.org \
   && cnpm install \
-  && cnpm run build:prod
+  && npm run build:prod
 
 # web
 FROM nginx:alpine
