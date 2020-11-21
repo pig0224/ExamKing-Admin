@@ -1,5 +1,5 @@
 # build
-FROM node:latest AS builder
+FROM node:alpine AS builder
 
 # 切换编译目录
 WORKDIR /build
