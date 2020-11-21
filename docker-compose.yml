@@ -12,7 +12,7 @@ services:
     networks:
       - server_net
     volumes:
-      - node_modules:/build:rw
+      - node_modules:/build/node_modules:rw
 
 volumes: 
   node_modules:
