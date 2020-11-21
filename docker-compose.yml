@@ -1,31 +1,23 @@
 version: '3.4'
 
 services:
-  admin_nginx:
+  nginx:
     build:
       context: ./
       dockerfile: ./docker/nginx/Dockerfile
-    container_name: examking_admin_nginx
-    depends_on:
-      - admin_build
+    image: admin_web:${GITHASH}
     ports:
       - 8081:80
     restart: "always"
+    networks:
+      - server_net
     volumes:
-      - admin_dist:/var/www/html:rw
-  admin_build: 
-    build:
-      context: ./
-      dockerfile: ./docker/build/Dockerfile
-    container_name: examking_admin_build
-    volumes:
-      - admin_dist:/home/examking_admin/dist
-      - admin_node_modules:/home/examking_admin/node_modules
+      - node_modules:/build:rw
 
 volumes: 
-  admin_node_modules:
-  admin_dist:
+  node_modules:
 
 networks: # 创建新的网络类型
-  examking_admin_net:
-    driver: bridge  # 网络方式：桥接或集群
+  server_net:
+    external:
+      name: ek_server_eknet
