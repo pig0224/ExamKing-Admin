@@ -4,9 +4,7 @@ FROM node:latest AS builder
 WORKDIR /build
 COPY ./ ./
 # 编译项目
-RUN ls \ 
-  && npm install -g cnpm --registry=https://registry.npm.taobao.org \
-  && cnpm install \
+RUN npm install \
   && npm run build:prod
 
 # web
