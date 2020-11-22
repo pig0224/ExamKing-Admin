@@ -5,8 +5,8 @@ FROM node:alpine AS builder
 WORKDIR /build
 COPY ./ ./
 # 编译项目
-RUN npm install -g cnpm --registry=https://registry.npm.taobao.org \
-  && cnpm install \
+RUN npm config set registry https://registry.npm.taobao.org \
+  && npm install \
   && npm run build:prod
 
 # web
