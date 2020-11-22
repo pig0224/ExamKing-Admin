@@ -1,7 +1,7 @@
 {
-  "name": "ExamKing-Vue",
+  "name": "ExamKing-Admin",
   "version": "4.4.0",
-  "description": "ExamKing-Vue with Element UI & axios & iconfont & permission control & lint",
+  "description": "ExamKing-Admin with Element UI & axios & iconfont & permission control & lint",
   "author": "Pig <xiaomo_0258@icloud.com>",
   "scripts": {
     "dev": "vue-cli-service serve",
