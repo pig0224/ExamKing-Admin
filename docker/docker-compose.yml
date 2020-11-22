@@ -11,6 +11,8 @@ services:
     restart: "always"
     networks:
       - server_net
+    volumes:
+      - node_modules:/build/node_modules:rw
 
 volumes: 
   node_modules:
