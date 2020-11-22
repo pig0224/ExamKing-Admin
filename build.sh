@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # 项目名称
-export COMPOSE_PROJECT_NAME="ek_admin_web"
+export COMPOSE_PROJECT_NAME="ek_web"
 export COMPOSE_FILE="./docker/docker-compose.yml"
 version=`cat VERSION`
 
