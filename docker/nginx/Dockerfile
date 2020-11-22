@@ -5,11 +5,9 @@ FROM node:latest AS builder
 WORKDIR /build
 COPY ./ ./
 # 编译项目
-RUN npm install -g cnpm --registry=https://registry.npm.taobao.org \
-  && npm install -g yarn \
-  && yarn config set registry https://registry.npm.taobao.org/ \
+RUN yarn config set registry https://registry.npm.taobao.org/ \
   && yarn install \
-  && npm run build:prod
+  && yarn run build:prod
 
 # web
 FROM nginx:alpine
