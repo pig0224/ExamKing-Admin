@@ -3,9 +3,9 @@ version: '3.4'
 services:
   nginx:
     build:
-      context: ./
+      context: ../
       dockerfile: ./docker/nginx/Dockerfile
-    image: admin_web:${GITHASH}
+    image: ek_admin_web:${VERSIONTAG}
     ports:
       - 8081:80
     restart: "always"
