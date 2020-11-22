@@ -5,7 +5,8 @@ FROM node:alpine AS builder
 WORKDIR /build
 COPY ./ ./
 # 编译项目
-RUN npm install -g cnpm --registry=https://registry.npm.taobao.org
+RUN npm install -g cnpm --registry=https://registry.npm.taobao.org \
+  && cnpm install 
 
 # web
 FROM nginx:alpine
