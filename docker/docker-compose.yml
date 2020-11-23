@@ -9,6 +9,8 @@ services:
     ports:
       - 8081:80
     restart: "always"
+    extra_hosts:
+      - "admin_server:172.16.238.12"
     networks:
       - server_net
     volumes:
