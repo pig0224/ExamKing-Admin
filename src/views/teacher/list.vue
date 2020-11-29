@@ -18,7 +18,7 @@
               highlight-current-row
               style="width: 100%">
       <el-table-column prop="teacherName"
-                       label="班级名称" />
+                       label="教师名称" />
       <el-table-column prop="sex"
                        label="性别" />
       <el-table-column prop="telphone"
