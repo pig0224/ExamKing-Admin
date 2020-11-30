@@ -15,7 +15,10 @@ FROM nginx:alpine
 # 镜像信息
 LABEL author="pig224" email="xiaomo_0258@icloud.com"
 # 时区
-ENV TZ=Asia/Shanghai
+RUN sed -i "s@http://dl-cdn.alpinelinux.org/@https://repo.huaweicloud.com/@g" repositories  \
+  && apk --no-cache add tzdata \
+  && ln -snf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
+  && echo 'Asia/Shanghai' > /etc/timezone
 
 COPY ./docker/nginx/logs /var/log/nginx
 COPY ./docker/nginx/vhost /etc/nginx/conf.d/
