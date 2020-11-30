@@ -33,6 +33,7 @@
       <el-form-item label="密码"
                     prop="password">
         <el-input v-model="form.password"
+                  type="password"
                   placeholder="留空不修改密码"></el-input>
       </el-form-item>
 

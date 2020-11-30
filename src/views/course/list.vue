@@ -21,6 +21,8 @@
                        label="课程名称" />
       <el-table-column prop="teacher.teacherName"
                        label="所属教师" />
+      <el-table-column prop="classes"
+                       label="所属班级" />
       <el-table-column prop="createTime"
                        label="创建时间" />
       <el-table-column width="220px"
@@ -75,6 +77,17 @@ export default {
         this.queryParam.pageSize = data.pageSize
         this.totalCount = data.totalCount
         this.items = data.items
+        this.items.forEach((item, index) => {
+          var classes = ''
+          this.items[index].classes.forEach((item, index) => {
+            if (index == 0) {
+              classes = item.classesName
+            } else {
+              classes = classes + '、' + item.classesName
+            }
+          })
+          this.items[index].classes = classes
+        })
       })
       this.listLoading = false
     },
