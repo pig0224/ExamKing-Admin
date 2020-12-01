@@ -1,0 +1,25 @@
+version: '3.4'
+
+services:
+  nginx:
+    build:
+      context: ../
+      dockerfile: ./docker/nginx/Dockerfile
+    image: ek_admin_web:${VERSIONTAG}
+    ports:
+      - 8081:80
+    restart: "always"
+    extra_hosts:
+      - "admin_server:172.16.238.12"
+    networks:
+      - server_net
+    volumes:
+      - node_modules:/build/node_modules:rw
+
+volumes: 
+  node_modules:
+
+networks: # 创建新的网络类型
+  server_net:
+    external:
+      name: ek_server_eknet
